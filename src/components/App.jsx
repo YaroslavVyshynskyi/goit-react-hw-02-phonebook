@@ -2,7 +2,7 @@ import { Component } from "react";
 import { nanoid } from 'nanoid';
 import ContactForm from "./ContactForm/ContactForm"
 import ContactList from "./ContactList/ContactList"
-
+import Filter from "./Filter/Filter" 
 
 
 class App extends Component {
@@ -34,14 +34,30 @@ class App extends Component {
     }));
   };
 
+  changeFilter = e => {
+    this.setState({ filter: e.currentTarget.value });
+  };
+  
+  getVisibleContacts = () => { 
+    const { filter, contacts } = this.state;
+
+    const normalizedFilter = filter.toLowerCase();
+
+    return contacts.filter(contact =>
+    contact.name.toLowerCase().includes(normalizedFilter));
+  }
+
   render() {
+
+    const visibleContacts = this.getVisibleContacts();
+    
     return (
       <div>
         <h1>Phonebook</h1>
         <ContactForm onSubmit={this.handleAddContact} />
 
         <h2>Contacts</h2>
-        {/* <Filter /> */}
+        <Filter value={ this.state.filter } onChange={this.changeFilter} />
         <ContactList contacts={this.state.contacts} />
       </div>  
     )
