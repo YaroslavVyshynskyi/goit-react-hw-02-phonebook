@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { nanoid } from 'nanoid';
-
+import css from "./ContactForm.module.css"
 
 class ContactForm extends Component {
     state = {
@@ -10,7 +9,6 @@ class ContactForm extends Component {
     }
     
     handleChange = e => {
-        // const { name, number } = e.currentTarget;
         const { name, value } = e.currentTarget;
         this.setState({ [name]: value });
     }
@@ -18,7 +16,6 @@ class ContactForm extends Component {
     handleSubmit = e => { 
         e.preventDefault();
 
-        console.log(this.state);
         this.props.onSubmit(this.state);
         this.reset();
     }
@@ -29,11 +26,9 @@ class ContactForm extends Component {
 
     render() {
         return (
-            // <p className="form_title">Phonebook</p>
-        
-            <div className="form__container">
-                <form action="" onSubmit={ this.handleSubmit}>
-                    <label className="form__label">
+            <div className={css.form__container}>
+                <form onSubmit={ this.handleSubmit} className={css.form}>
+                    <label className={css.form__label}>
                         Name
                         <input
                             type="text"
@@ -45,7 +40,7 @@ class ContactForm extends Component {
                             required
                         />
                     </label>
-                    <label className="form__label">
+                    <label className={css.form__label}>
                         Number
                         <input
                             type="tel"
@@ -57,11 +52,15 @@ class ContactForm extends Component {
                             required
                         />
                     </label>
-                    <button type="submit" className="">Add contact</button>
+                    <button type="submit" className={css.btn__add}>Add contact</button>
                 </form>
             </div>
         );
     };
+};
+
+ContactForm.propTypes = {
+    onSubmit:  PropTypes.func.isRequired,
 };
 
 export default ContactForm;

@@ -4,7 +4,6 @@ import ContactForm from "./ContactForm/ContactForm"
 import ContactList from "./ContactList/ContactList"
 import Filter from "./Filter/Filter" 
 
-
 class App extends Component {
   state = {
     contacts: [
@@ -19,16 +18,19 @@ class App extends Component {
     id: ''
   };
   
-  // contactId = nanoid();
-
   handleAddContact = data => {
-    console.log(data);
+    const existingContactsNames = this.state.contacts.map(({ name }) => name.toLowerCase());
+    if (existingContactsNames.includes(data.name.toLowerCase())) {
+      alert(`${data.name} is already in contacts`)
+      return
+    }
+    
     const contact = {
       name: data.name,
       number: data.number,
       id: nanoid()
     };
-    console.log(contact);
+    
     this.setState(({ contacts }) => ({
       contacts: [contact, ...contacts],
     }));
@@ -47,6 +49,12 @@ class App extends Component {
     contact.name.toLowerCase().includes(normalizedFilter));
   }
 
+  deleteContact = (deleteId) => {
+    this.setState(({ contacts }) => ({
+      contacts: contacts.filter(({ id }) => id !== deleteId)
+    }));
+  }
+
   render() {
 
     const visibleContacts = this.getVisibleContacts();
@@ -58,7 +66,7 @@ class App extends Component {
 
         <h2>Contacts</h2>
         <Filter value={ this.state.filter } onChange={this.changeFilter} />
-        <ContactList contacts={this.state.contacts} />
+        <ContactList contacts={visibleContacts} deleteContact={this.deleteContact} />
       </div>  
     )
   };
