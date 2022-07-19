@@ -5,9 +5,6 @@ import css from "./ContactList.module.css"
 const ContactList = ({ contacts, deleteContact }) => {
     const contactsCaunt = contacts.length;
     
-    if (contactsCaunt <= 0) {
-        return null;
-    }
     return (
         <ul className={css.contacts__list}>
             {contacts.map(({ name, number, id }) => {
